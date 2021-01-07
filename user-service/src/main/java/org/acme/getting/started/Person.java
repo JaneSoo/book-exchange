@@ -28,9 +28,9 @@ public class Person extends PanacheEntity {
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", id=" + id +
                 '}';
     }
+
 }

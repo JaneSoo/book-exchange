@@ -15,5 +15,6 @@ public class PersonGenerator {
         Person.add("Jake", "Daniel", "jake@email.com", "passwordforjake", "1234567890");
         Person.add("Rose", "Kim", "rose@email.com", "passwordforrose", "12345678901");
         Person.add("Jimmy", "Ly", "jimmy@email.com", "passwordforjimmy", "123456789012");
+        System.out.println("init data");
     }
 }
