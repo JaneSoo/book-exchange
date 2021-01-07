@@ -5,8 +5,8 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 import javax.persistence.Entity;
 
-@Entity
-public class Person extends PanacheEntity {
+@Entity(name = "\"User\"")
+public class User extends PanacheEntity {
     public String firstName;
     public String lastName;
     public String email;
@@ -14,17 +14,17 @@ public class Person extends PanacheEntity {
     public String phoneNumber;
 
     public static void add(String firstName, String lastName, String email, String password, String phoneNumber){
-        Person person = new Person();
-        person.firstName = firstName;
-        person.lastName = lastName;
-        person.email = email;
-        person.password = BcryptUtil.bcryptHash(password);
-        person.persist();
+        User user = new User();
+        user.firstName = firstName;
+        user.lastName = lastName;
+        user.email = email;
+        user.password = BcryptUtil.bcryptHash(password);
+        user.persist();
     }
 
     @Override
     public String toString() {
-        return "Person{" +
+        return "User{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +

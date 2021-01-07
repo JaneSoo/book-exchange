@@ -8,19 +8,19 @@ import javax.transaction.Transactional;
 import javax.ws.rs.NotFoundException;
 
 @ApplicationScoped
-public class PersonService {
-    private Logger log = Logger.getLogger(PersonService.class);
+public class UserService {
+    private Logger log = Logger.getLogger(UserService.class);
 
     @Transactional
-    public Person create(Person person){
-        person.persist();
-        return person;
+    public User create(User user){
+        user.persist();
+        return user;
     }
 
     @Transactional
-    public Person update(long id, JsonObject updateJson){
-        Person person = Person.findById(id);
-        if (person == null){
+    public User update(long id, JsonObject updateJson){
+        User user = User.findById(id);
+        if (user == null){
             return null;
         }
 
@@ -28,36 +28,36 @@ public class PersonService {
             String value = entry.getValue().toString().replace("\"", "");
             switch (entry.getKey()) {
                 case "id":
-                    person.id = Long.valueOf(value);
+                    user.id = Long.valueOf(value);
                     break;
                 case "firstName":
-                    person.firstName = value;
+                    user.firstName = value;
                     break;
                 case "lastName":
-                    person.lastName = value;
+                    user.lastName = value;
                     break;
                 case "email":
-                    person.email = value;
+                    user.email = value;
                     break;
                 case "password":
-                    person.email = value;
+                    user.email = value;
                     break;
                 default:
                     throw new IllegalArgumentException("Unknown property provided for update user: " + entry.getKey());
             }
         });
-        person.persist();
-        return person;
+        user.persist();
+        return user;
     }
 
     @Transactional
-    public Person delete(long id){
-        Person person = Person.findById(id);
-        if (person == null){
+    public User delete(long id){
+        User user = User.findById(id);
+        if (user == null){
             throw new NotFoundException("Cannot find user with id: " + id);
         }
-        boolean deleted = Person.deleteById(id);
-        return deleted ? person : null;
+        boolean deleted = User.deleteById(id);
+        return deleted ? user : null;
     }
 
 

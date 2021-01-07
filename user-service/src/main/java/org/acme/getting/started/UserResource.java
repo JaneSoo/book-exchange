@@ -13,42 +13,42 @@ import java.util.List;
 @ApplicationScoped
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class PersonResource {
+public class UserResource {
 
     @Inject
-    PersonService personService;
+    UserService userService;
 
     @GET
-    public List<Person> getAll() {
-        return Person.listAll();
+    public List<User> getAll() {
+        return User.listAll();
     }
 
     @GET
     @Path("{id}")
     public Response get(@PathParam long id) {
-        Person person = Person.findById(id);
+        User user = User.findById(id);
 
-        if (person == null) {
+        if (user == null) {
             return Response
                     .status(Response.Status.NOT_FOUND)
-                    .entity(String.format("Person for id %d not found.", id))
+                    .entity(String.format("User for id %d not found.", id))
                     .build();
         }
 
-        return Response.ok(person).build();
+        return Response.ok(user).build();
     }
 
     @POST
     @Path("register")
-    public Person create(Person person){
-        return personService.create(person);
+    public User create(User user){
+        return userService.create(user);
     }
 
     @PUT
     @Path("{id}")
-    public Person update(@PathParam long id, JsonObject update){
+    public User update(@PathParam long id, JsonObject update){
         try{
-            return personService.update(id, update);
+            return userService.update(id, update);
         } catch (IllegalArgumentException iae){
             throw new ClientErrorException(iae.getMessage(), Response
                 .status(Response.Status.PRECONDITION_FAILED)
@@ -60,10 +60,10 @@ public class PersonResource {
     @DELETE
     @Path("{id}")
     public Response delete(@org.jboss.resteasy.annotations.jaxrs.PathParam long id){
-        Person person;
+        User user;
         try{
-            person = personService.delete(id);
-            if(person == null){
+            user = userService.delete(id);
+            if(user == null){
                 return Response
                         .status(Response.Status.INTERNAL_SERVER_ERROR)
                         .entity("Cannot delete user with id: " + id)
@@ -74,7 +74,7 @@ public class PersonResource {
                     .entity(String.format("User with id %d not found.", id))
                     .build();
         }
-        return Response.ok(person).build();
+        return Response.ok(user).build();
     }
 
 }
