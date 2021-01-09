@@ -1,5 +1,7 @@
-package org.acme.getting.started;
+package org.acme.getting.started.service;
 
+import io.quarkus.elytron.security.common.BcryptUtil;
+import org.acme.getting.started.entity.User;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -10,11 +12,50 @@ import javax.ws.rs.NotFoundException;
 @ApplicationScoped
 public class UserService {
     private Logger log = Logger.getLogger(UserService.class);
+    private String email;
+    private String password;
 
     @Transactional
     public User create(User user){
+        byte[] salt = new byte[16];
+        user.password = BcryptUtil.bcryptHash(user.password, 4, salt);
         user.persist();
         return user;
+    }
+
+    @Transactional
+    public long login(JsonObject userCredential) {
+        userCredential.entrySet().forEach(entry -> {
+            String value = entry.getValue().toString().replace("\"", "");
+            switch (entry.getKey()) {
+                case "email":
+                    email = value;
+                    break;
+                case "password":
+                    password = value;
+                    break;
+                default:
+                    throw new IllegalArgumentException("unknown property");
+            }
+        });
+
+        if (email == null) {
+            throw new IllegalArgumentException("Cannot login without email");
+        }
+        User user = User.find("email", email).firstResult();
+        if (password == null) {
+            throw new IllegalArgumentException("Impossible to authenticate customer without password");
+        }
+        byte[] salt = new byte[16];
+        password = BcryptUtil.bcryptHash(password, 4, salt);
+        System.out.println("try hashed to compoare: " + BcryptUtil.bcryptHash(password));
+
+        System.out.println(user.password);
+        if (password.equals(user.password)){
+            return user.id;
+        } else {
+            throw new IllegalArgumentException("Incorrect login");
+        }
     }
 
     @Transactional

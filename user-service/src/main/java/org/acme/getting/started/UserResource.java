@@ -1,5 +1,7 @@
 package org.acme.getting.started;
 
+import org.acme.getting.started.entity.User;
+import org.acme.getting.started.service.UserService;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -42,6 +44,12 @@ public class UserResource {
     @Path("register")
     public User create(User user){
         return userService.create(user);
+    }
+
+    @POST
+    @Path("login")
+    public long login(JsonObject userCredential){
+        return userService.login(userCredential);
     }
 
     @PUT

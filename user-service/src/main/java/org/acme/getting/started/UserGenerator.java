@@ -1,6 +1,7 @@
 package org.acme.getting.started;
 
 import io.quarkus.runtime.StartupEvent;
+import org.acme.getting.started.entity.User;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
