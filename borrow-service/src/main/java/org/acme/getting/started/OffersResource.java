@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
 
@@ -110,9 +111,9 @@ public class OffersResource {
     @Transactional
     @DELETE
     @Path("/{id}")
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Operation(description = "cancel offer of some book")
-    public void cancelOffer(@PathParam("id") Long id) {
+    public void cancelOffer(@PathParam("id") Long id, @Valid Owner owner) {
         Optional<Offer> offer = Offer.findByIdOptional(id);
         if (offer.isEmpty()) {
             throw new WebApplicationException("Offer with given id not found.", 404);
@@ -120,21 +121,22 @@ public class OffersResource {
         if (!offer.get().availability) {
             throw new WebApplicationException("Offer cannot be canceled because book is borrowed.", 403);
         }
+        if (!offer.get().owner_id.equals(owner.owner_id)) {
+            throw new WebApplicationException("Owner id does not match the id in the offer.", 403);
+        }
         LOG.info("Canceling offer: " + offer);
         Offer.deleteById(id);
     }
 
-    private void assertBookExists(String isbn) { // TODO
-//        Book book = bookRESTClient.getByISBN(isbn);
-//        if (!book.isbn.equals(isbn)) {
-//            throw new WebApplicationException("Referenced book does not exist.", 400);
-//        }
+    private void assertBookExists(String isbn) {
+        if (bookRESTClient.getByISBN(isbn).getStatus() == Response.Status.NOT_FOUND.getStatusCode()) {
+            throw new WebApplicationException("Referenced book does not exist.", 400);
+        }
     }
 
-    private void assertUserExists(Long userId) { // TODO
-//        User user = userRESTClient.getById(userId);
-//        if (!user.user_id.equals(userId)) {
-//            throw new WebApplicationException("Referenced user does not exist.", 400);
-//        }
+    private void assertUserExists(Long userId) {
+        if (userRESTClient.getById(userId).getStatus() == Response.Status.NOT_FOUND.getStatusCode()) {
+            throw new WebApplicationException("Referenced user does not exist.", 400);
+        }
     }
 }

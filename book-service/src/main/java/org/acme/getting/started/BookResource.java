@@ -32,7 +32,7 @@ public class BookResource {
         if (book == null){
             return Response
               .status(Response.Status.NOT_FOUND)
-              .entity(String.format("Book for isbn %d is not found", isbn))
+              .entity(String.format("Book for isbn %s is not found", isbn))
               .build();
         }
         return Response.ok(book).build();
@@ -71,7 +71,7 @@ public class BookResource {
             }
         }catch (NotFoundException nfe){
             return Response.status(Response.Status.NOT_FOUND)
-              .entity(String.format("Book with ISBN %d not found.", isbn))
+              .entity(String.format("Book with ISBN %s not found.", isbn))
               .build();
         }
         return Response.ok(book).build();
