@@ -101,5 +101,11 @@ public class UserService {
         return deleted ? user : null;
     }
 
+    @Transactional
+    public User findById(long id) {
+        User user = User.findById(id);
+        return user;
+    }
+
 
 }
