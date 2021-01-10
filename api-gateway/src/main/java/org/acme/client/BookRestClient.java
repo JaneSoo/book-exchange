@@ -1,6 +1,7 @@
 package org.acme.client;
 
 
+import org.acme.DTOs.Book.Book;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 import javax.ws.rs.*;
@@ -13,11 +14,11 @@ public interface BookRestClient {
     @GET
     @Path("/books")
     @Produces(MediaType.APPLICATION_JSON)
-    Set<String> getAllBooks();
+    Set<Book> getAllBooks();
 
     @POST
     @Path("/books/create")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-    boolean createBook(String isbn);
+    @Produces(MediaType.APPLICATION_JSON)
+    Book createBook(Book book);
 }

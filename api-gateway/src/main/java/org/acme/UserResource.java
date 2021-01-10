@@ -30,18 +30,20 @@ public class UserResource {
     @Counted(name = "users.register.counter")
     @Timed(name = "users.register.timer")
     @Operation(summary = "User registration")
-    public boolean register(UserCreateDTO user){
+    public UserCreateDTO register(UserCreateDTO user){
         return userRestClient.register(user);
     }
 
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
     @Counted(name = "users.login.counter")
     @Timed(name = "users.login.timer")
     @Operation(summary = "User login")
     public Response login(UserLoginDTO user) throws Exception {
         var id = userRestClient.login(user);
+        System.out.println(id);
         if (id == null)
             return Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)

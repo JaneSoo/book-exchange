@@ -1,5 +1,6 @@
 package org.acme;
 
+import org.acme.DTOs.Book.Book;
 import org.acme.client.BookRestClient;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
@@ -25,19 +26,20 @@ public class BookResource {
     @Counted(name = "book.gettAllBooks.counter")
     @Timed(name = "book.getAllBooks.timer")
     @Operation(summary = "Retrieves list of isbn of all the books in the system")
-    public Set<String> getAllBooks(){
+    public Set<Book> getAllBooks(){
         return bookRestClient.getAllBooks();
 
     }
-    @PUT
+
+    @POST
     @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Counted(name = "book.create.counter")
     @Timed(name = "book.create.timer")
     @Operation(summary = "Only inserts book into system")
-    public boolean createBook(@RequestBody(description = "ISBN of given book", required = true)
-                              String isbn){
-        return bookRestClient.createBook(isbn);
+    public Book createBook(Book book) {
+        System.out.println(book.isbn);
+        return bookRestClient.createBook(book);
     }
 }

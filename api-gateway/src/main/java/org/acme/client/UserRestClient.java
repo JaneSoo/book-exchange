@@ -13,13 +13,13 @@ import javax.ws.rs.core.MediaType;
 @RegisterRestClient(configKey = "user-service")
 public interface UserRestClient {
     @POST
-    @Path("/register")
+    @Path("/users/register")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-    boolean register(UserCreateDTO user);
+    @Produces(MediaType.APPLICATION_JSON)
+    UserCreateDTO register(UserCreateDTO user);
 
     @POST
-    @Path("/login")
+    @Path("/users/login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     Long login(UserLoginDTO offer);

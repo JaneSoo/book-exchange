@@ -1,6 +1,5 @@
 package org.acme.client;
 
-import org.acme.DTOs.Book.BookDTO;
 import org.acme.DTOs.Offer.*;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
@@ -11,32 +10,32 @@ import java.util.Set;
 @RegisterRestClient(configKey = "offer-service")
 public interface OfferRestClient {
     @POST
-    @Path("/offer/create")
+    @Path("/offers/create")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     boolean createOffer(OfferCreateDTO offer);
 
 
     @POST
-    @Path("/offer/cancel")
+    @Path("/offers/cancel")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     boolean cancelOffer(OfferCancelDTO offer);
 
     @PUT
-    @Path("/offer/return")
+    @Path("/offers/return")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     boolean returnOffer(OfferReturnDTO offer);
 
     @PUT
-    @Path("/offer/take")
+    @Path("/offers/take")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     boolean takeOffer(OfferTakeDTO offer);
 
     @GET
-    @Path("/offer/available")
+    @Path("/offers/available")
     @Produces(MediaType.APPLICATION_JSON)
     Set<OfferShowDTO> availableOffers();
 }
