@@ -48,8 +48,8 @@ public class UserResource {
 
     @POST
     @Path("login")
-    public long login(JsonObject userCredential){
-        return userService.login(userCredential);
+    public Long login(UserLogin login){
+        return userService.login(login);
     }
 
     @PUT

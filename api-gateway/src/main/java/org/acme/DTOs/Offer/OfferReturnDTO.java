@@ -1,6 +1,6 @@
 package org.acme.DTOs.Offer;
 
 public class OfferReturnDTO {
-    public long userId;
-    public long offerId;
+    public long owner_id;
+    public long offer_id;
 }

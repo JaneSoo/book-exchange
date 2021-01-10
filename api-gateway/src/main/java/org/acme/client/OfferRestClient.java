@@ -7,31 +7,31 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Set;
 
-@RegisterRestClient(configKey = "offer-service")
+@RegisterRestClient(configKey = "borrow-service")
 public interface OfferRestClient {
     @POST
     @Path("/offers/create")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-    boolean createOffer(OfferCreateDTO offer);
+    @Produces(MediaType.APPLICATION_JSON)
+    OfferCreateDTO createOffer(OfferCreateDTO offer);
 
 
     @POST
     @Path("/offers/cancel")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     boolean cancelOffer(OfferCancelDTO offer);
 
     @PUT
     @Path("/offers/return")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     boolean returnOffer(OfferReturnDTO offer);
 
     @PUT
     @Path("/offers/take")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     boolean takeOffer(OfferTakeDTO offer);
 
     @GET
