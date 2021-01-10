@@ -28,7 +28,7 @@ public class UserResource {
     @GET
     @Path("{id}")
     public Response get(@PathParam long id) {
-        User user = User.findById(id);
+        User user = userService.findById(id);
 
         if (user == null) {
             return Response
