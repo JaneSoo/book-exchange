@@ -1,12 +1,12 @@
-package org.acme.getting.started;
+package org.acme.getting.started.entity;
 
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 import javax.persistence.Entity;
 
-@Entity
-public class Person extends PanacheEntity {
+@Entity(name = "\"user\"")
+public class User extends PanacheEntity {
     public String firstName;
     public String lastName;
     public String email;
@@ -14,23 +14,28 @@ public class Person extends PanacheEntity {
     public String phoneNumber;
 
     public static void add(String firstName, String lastName, String email, String password, String phoneNumber){
-        Person person = new Person();
-        person.firstName = firstName;
-        person.lastName = lastName;
-        person.email = email;
-        person.password = BcryptUtil.bcryptHash(password);
-        person.persist();
+        User user = new User();
+        user.firstName = firstName;
+        user.lastName = lastName;
+        user.email = email;
+        user.password = BcryptUtil.bcryptHash(password);
+        byte[] salt = new byte[16];
+        user.password = BcryptUtil.bcryptHash(password, 4, salt);
+        user.persist();
     }
 
     @Override
     public String toString() {
-        return "Person{" +
+        return "User{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", id=" + id +
                 '}';
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

@@ -7,15 +7,15 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
-public class PersonTest {
+public class UserResourceTest {
 
     @Test
-    public void testHelloEndpoint() {
+    public void testGetAllEndpoint() {
         given()
-          .when().get("/user")
+          .when().get("/users")
           .then()
              .statusCode(200)
-             .body(is("Hello"));
+             .body("$.size()", is(4));
     }
-
 }
+
