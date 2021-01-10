@@ -1,5 +1,6 @@
 package org.acme;
 
+import org.acme.DTOs.Book.Book;
 import org.acme.DTOs.Offer.*;
 import org.acme.client.OfferRestClient;
 import org.eclipse.microprofile.openapi.annotations.Operation;
@@ -27,28 +28,30 @@ public class OfferResource {
 
     @POST
     @Path("/create")
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Counted(name = "offers.createOffer.counter")
     @Timed(name = "offers.createOffer.timer")
     @Operation(summary = "Users makes his book available to others")
-    public boolean createOffer(@RequestBody(description = "ISBN of given book", required = true)
-                               String isbn){
+    public OfferCreateDTO createOffer(Book book){
         OfferCreateDTO offer = new OfferCreateDTO();
-        offer.isbn = isbn;
+        offer.isbn = book.isbn;
+        //System.out.println("isbn"+book.isbn);
         try {
-            offer.userId = userContext.getUserId();
+            offer.owner_id = userContext.getUserId();
         }catch (Exception e){
             throw new ClientErrorException(e.getMessage(), Response
                     .status(Response.Status.PRECONDITION_FAILED)
                     .entity(e.getMessage())
                     .build());
         }
+        System.out.println("userId"+offer.owner_id);
+        System.out.println("isbn"+book.isbn);
         return offerRestClient.createOffer(offer);
     }
 
-    @POST
+    @DELETE
     @Path("/cancel")
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Counted(name = "offers.cancelOffer.counter")
     @Timed(name = "offers.cancelOffer.timer")
     @Operation(summary = "Users no longer wants to provide the book for others")
@@ -56,9 +59,9 @@ public class OfferResource {
                                long offerId){
 
         OfferCancelDTO offer = new OfferCancelDTO();
-        offer.offerId = offerId;
+        offer.offer_id = offerId;
         try {
-            offer.userId = userContext.getUserId();
+            offer.owner_id = userContext.getUserId();
         }catch (Exception e){
             throw new ClientErrorException(e.getMessage(), Response
                     .status(Response.Status.PRECONDITION_FAILED)
@@ -70,8 +73,7 @@ public class OfferResource {
 
     @PUT
     @Path("/return")
-    @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Counted(name = "offers.returnOffer.counter")
     @Timed(name = "offers.returnOffer.timer")
     @Operation(summary = "User returns the borrowed book")
@@ -79,9 +81,9 @@ public class OfferResource {
                                long offerId){
 
         OfferReturnDTO offer = new OfferReturnDTO();
-        offer.offerId = offerId;
+        offer.offer_id = offerId;
         try {
-            offer.userId = userContext.getUserId();
+            offer.owner_id = userContext.getUserId();
         }catch (Exception e){
             throw new ClientErrorException(e.getMessage(), Response
                     .status(Response.Status.PRECONDITION_FAILED)
@@ -93,8 +95,7 @@ public class OfferResource {
 
     @POST
     @Path("/take")
-    @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Counted(name = "offers.takeOffer.counter")
     @Timed(name = "offers.takeOffer.timer")
     @Operation(summary = "User wants to borrow given book")
@@ -102,9 +103,9 @@ public class OfferResource {
                              long offerId){
 
         OfferTakeDTO offer = new OfferTakeDTO();
-        offer.offerId = offerId;
+        offer.offer_id = offerId;
         try {
-            offer.userId = userContext.getUserId();
+            offer.owner_id = userContext.getUserId();
         }catch (Exception e){
             throw new ClientErrorException(e.getMessage(), Response
                     .status(Response.Status.PRECONDITION_FAILED)

@@ -1,6 +1,7 @@
 package org.acme.getting.started.service;
 
 import io.quarkus.elytron.security.common.BcryptUtil;
+import org.acme.getting.started.UserLogin;
 import org.acme.getting.started.entity.User;
 import org.jboss.logging.Logger;
 
@@ -23,21 +24,27 @@ public class UserService {
         return user;
     }
 
-    @Transactional
-    public long login(JsonObject userCredential) {
-        userCredential.entrySet().forEach(entry -> {
-            String value = entry.getValue().toString().replace("\"", "");
-            switch (entry.getKey()) {
-                case "email":
-                    email = value;
-                    break;
-                case "password":
-                    password = value;
-                    break;
-                default:
-                    throw new IllegalArgumentException("unknown property");
-            }
-        });
+    //@Transactional
+    public Long login(UserLogin login) {
+        /* Mapping straight to class, fix for java 14 */
+//        userCredential.entrySet().forEach(entry -> {
+//            String value = entry.getValue().toString().replace("\"", "");
+//            switch (entry.getKey()) {
+//                case "email":
+//                    email = value;
+//                    break;
+//                case "password":
+//                    password = value;
+//                    break;
+//                default:
+//                    throw new IllegalArgumentException("unknown property");
+//            }
+//        });
+        if (login == null) {
+            throw new IllegalArgumentException("Cannot login without email");
+        }
+        email = login.email;
+        password = login.password;
 
         if (email == null) {
             throw new IllegalArgumentException("Cannot login without email");
