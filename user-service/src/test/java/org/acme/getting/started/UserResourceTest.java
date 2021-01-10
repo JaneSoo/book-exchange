@@ -7,6 +7,7 @@ import javax.ws.rs.core.MediaType;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 
 @QuarkusTest
 public class UserResourceTest {
@@ -17,7 +18,7 @@ public class UserResourceTest {
           .when().get("/users")
           .then()
              .statusCode(200)
-             .body("$.size()", is(4));
+             .body("email", containsInAnyOrder("jonh@email.com", "jake@email.com", "rose@email.com"));
     }
 
     @Test
@@ -40,8 +41,7 @@ public class UserResourceTest {
           .when()
           .post("/users/login")
           .then()
-          .statusCode(200)
-          .body(is(1));
+          .statusCode(200);
     }
 
     @Test
@@ -65,23 +65,14 @@ public class UserResourceTest {
           .body("email", is("update@email.com"));
     }
 
-//    @Test
-//    public void testDeleteEndpoint() {
-//        given()
-//          .body("{\"email\": \"pear@email.com\", \"password\": \"password\", \"firstName\": \"Pear\", \"lastName\": \"Poo\"}")
-//          .header("Content-Type", MediaType.APPLICATION_JSON)
-//          .when()
-//          .post("/users/register")
-//          .then()
-//          .statusCode(200)
-//          .body("email", is("pear@email.com"));
-//
-//        given()
-//          .when()
-//          .delete("/users/6")
-//          .then()
-//          .statusCode(200)
-//          .body("email", is("pear@email.com"));
-//    }
+    @Test
+    public void testDeleteEndpoint() {
+        given()
+          .when()
+          .delete("/users/4")
+          .then()
+          .statusCode(200)
+          .body("email", is("jimmy@email.com"));
+    }
 }
 
