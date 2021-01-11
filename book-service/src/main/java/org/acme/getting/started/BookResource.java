@@ -3,6 +3,10 @@ package org.acme.getting.started;
 import org.acme.getting.started.entity.Book;
 import org.acme.getting.started.service.BookService;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
+import org.eclipse.microprofile.metrics.annotation.Counted;
+import org.eclipse.microprofile.metrics.annotation.Timed;
+import org.eclipse.microprofile.metrics.MetricUnits;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.JsonObject;
@@ -21,12 +25,16 @@ public class BookResource {
     BookService bookService;
 
     @GET
+    @Counted(name = "getAll", description = "List all the books in database")
+    @Timed(name = "checksTimerGetAll", description = "A measure of how long it takes to perform the primality test.", unit = MetricUnits.MILLISECONDS)
     public List<Book> getAll(){
         return Book.listAll();
     }
 
     @GET
     @Path("{isbn}")
+    @Counted(name = "get", description = "Get book with given ISBN")
+    @Timed(name = "checksTimerGet", description = "A measure of how long it takes to perform the primality test.", unit = MetricUnits.MILLISECONDS)
     public Response get(@PathParam String isbn){
         Book book = Book.findByISBN(isbn);
         if (book == null){
@@ -40,12 +48,16 @@ public class BookResource {
 
     @POST
     @Path("/create")
+    @Counted(name = "create", description = "Create book to database")
+    @Timed(name = "checksTimerCreate", description = "A measure of how long it takes to perform the primality test.", unit = MetricUnits.MILLISECONDS)
     public Book create(Book book){
         return bookService.create(book);
     }
 
     @PUT
     @Path("{isbn}")
+    @Counted(name = "update", description = "Update book record with given ISBN")
+    @Timed(name = "checksTimerUpdate", description = "A measure of how long it takes to perform the primality test.", unit = MetricUnits.MILLISECONDS)
     public Book update(@PathParam String isbn, JsonObject update){
         try{
             return bookService.update(isbn, update);
@@ -59,6 +71,8 @@ public class BookResource {
 
     @DELETE
     @Path("{isbn}")
+    @Counted(name = "delete", description = "Delete book with given ISBN")
+    @Timed(name = "checksTimerDelete", description = "A measure of how long it takes to perform the primality test.", unit = MetricUnits.MILLISECONDS)
     public Response delete(@org.jboss.resteasy.annotations.jaxrs.PathParam String isbn){
         Book book;
         try{
