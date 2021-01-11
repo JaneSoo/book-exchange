@@ -1,0 +1,18 @@
+#+TITLE: Book exchange
+/Set of services for exchanging books between users./
+
+First of all, you need to build all Docker images.
+You can use our script:
+#+BEGIN_SOURCE sh
+./build-images.sh
+#+END_SOURCE
+
+Then you can start them using Docker Compose:
+#+BEGIN_SOURCE sh
+docker-compose up
+#+END_SOURCE
+
+To remove containers, networks, volumes, and images created by up, call:
+#+BEGIN_SOURCE sh
+docker-compose down
+#+END_SOURCE
