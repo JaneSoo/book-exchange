@@ -35,7 +35,6 @@ public class OfferResource {
     public OfferCreateDTO createOffer(Book book){
         OfferCreateDTO offer = new OfferCreateDTO();
         offer.isbn = book.isbn;
-        //System.out.println("isbn"+book.isbn);
         try {
             offer.owner_id = userContext.getUserId();
         }catch (Exception e){
@@ -55,11 +54,11 @@ public class OfferResource {
     @Counted(name = "offers.cancelOffer.counter")
     @Timed(name = "offers.cancelOffer.timer")
     @Operation(summary = "Users no longer wants to provide the book for others")
-    public boolean cancelOffer(@RequestBody(description = "ID of given offer", required = true)
-                               long offerId){
+    public void cancelOffer(@RequestBody(description = "ID of given offer", required = true)
+                                    OfferDTO dto){
 
         OfferCancelDTO offer = new OfferCancelDTO();
-        offer.offer_id = offerId;
+        offer.offer_id = dto.offer_id;
         try {
             offer.owner_id = userContext.getUserId();
         }catch (Exception e){
@@ -68,7 +67,7 @@ public class OfferResource {
                     .entity(e.getMessage())
                     .build());
         }
-        return offerRestClient.cancelOffer(offer);
+        offerRestClient.cancelOffer(offer);
     }
 
     @PUT
@@ -77,20 +76,19 @@ public class OfferResource {
     @Counted(name = "offers.returnOffer.counter")
     @Timed(name = "offers.returnOffer.timer")
     @Operation(summary = "User returns the borrowed book")
-    public boolean returnOffer(@RequestBody(description = "ID of given offer", required = true)
-                               long offerId){
+    public void returnOffer(OfferDTO dto){
 
         OfferReturnDTO offer = new OfferReturnDTO();
-        offer.offer_id = offerId;
+        offer.offer_id = dto.offer_id;
         try {
-            offer.owner_id = userContext.getUserId();
+            offer.user_id = userContext.getUserId();
         }catch (Exception e){
             throw new ClientErrorException(e.getMessage(), Response
                     .status(Response.Status.PRECONDITION_FAILED)
                     .entity(e.getMessage())
                     .build());
         }
-        return offerRestClient.returnOffer(offer);
+        offerRestClient.returnOffer(offer);
     }
 
     @POST
@@ -99,20 +97,22 @@ public class OfferResource {
     @Counted(name = "offers.takeOffer.counter")
     @Timed(name = "offers.takeOffer.timer")
     @Operation(summary = "User wants to borrow given book")
-    public boolean takeOffer(@RequestBody(description = "ID of given offer", required = true)
-                             long offerId){
+    public boolean takeOffer(OfferDTO dto){
 
         OfferTakeDTO offer = new OfferTakeDTO();
-        offer.offer_id = offerId;
+        offer.offer_id = dto.offer_id;
         try {
-            offer.owner_id = userContext.getUserId();
+            offer.user_id = userContext.getUserId();
         }catch (Exception e){
             throw new ClientErrorException(e.getMessage(), Response
                     .status(Response.Status.PRECONDITION_FAILED)
                     .entity(e.getMessage())
                     .build());
         }
-        return offerRestClient.takeOffer(offer);
+        var result = offerRestClient.takeOffer(offer);
+        if (!result.isEmpty())
+            return true;
+        return false;
     }
 
     @GET

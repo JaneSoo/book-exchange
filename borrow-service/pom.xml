@@ -80,6 +80,14 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-rest-client-jsonb</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-opentracing</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-metrics</artifactId>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

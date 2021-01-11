@@ -1,5 +1,5 @@
 package org.acme.DTOs.Offer;
 
-public class Offer {
+public class OfferDTO {
     public Long offer_id;
 }

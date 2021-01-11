@@ -2,6 +2,8 @@ package org.acme.getting.started;
 
 import org.acme.getting.started.entity.User;
 import org.acme.getting.started.service.UserService;
+import org.eclipse.microprofile.metrics.annotation.Counted;
+import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Timed;
