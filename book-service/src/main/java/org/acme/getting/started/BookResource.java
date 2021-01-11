@@ -2,6 +2,8 @@ package org.acme.getting.started;
 
 import org.acme.getting.started.entity.Book;
 import org.acme.getting.started.service.BookService;
+import org.eclipse.microprofile.metrics.annotation.Counted;
+import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -21,12 +23,16 @@ public class BookResource {
     BookService bookService;
 
     @GET
+    @Counted(name = "books.getAll.counter")
+    @Timed(name = "books.getAll.timer")
     public List<Book> getAll(){
         return Book.listAll();
     }
 
     @GET
     @Path("{isbn}")
+    @Counted(name = "books.get.counter")
+    @Timed(name = "books.get.timer")
     public Response get(@PathParam String isbn){
         Book book = Book.findByISBN(isbn);
         if (book == null){
@@ -40,12 +46,16 @@ public class BookResource {
 
     @POST
     @Path("/create")
+    @Counted(name = "books.create.counter")
+    @Timed(name = "books.create.timer")
     public Book create(Book book){
         return bookService.create(book);
     }
 
     @PUT
     @Path("{isbn}")
+    @Counted(name = "books.update.counter")
+    @Timed(name = "books.update.timer")
     public Book update(@PathParam String isbn, JsonObject update){
         try{
             return bookService.update(isbn, update);
@@ -59,6 +69,8 @@ public class BookResource {
 
     @DELETE
     @Path("{isbn}")
+    @Counted(name = "books.delete.counter")
+    @Timed(name = "books.delete.timer")
     public Response delete(@org.jboss.resteasy.annotations.jaxrs.PathParam String isbn){
         Book book;
         try{
