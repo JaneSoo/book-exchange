@@ -1,0 +1,34 @@
+version: "3"
+services:
+    database:
+        image: "postgres"
+        container_name: "database"
+        network_mode: host
+        env_file:
+          - ./infrastructure/database.env
+        volumes:
+          - ./infrastructure/initialize-databases.sql:/docker-entrypoint-initdb.d/init.sql
+    monitoring:
+        image: "prom/prometheus"
+        container_name: "prometheus"
+        network_mode: host
+        volumes:
+          - ./infrastructure/prometheus.yml:/etc/prometheus/prometheus.yml
+    api-gateway:
+        image: "quarkus/api-gateway-jvm"
+        network_mode: host
+    book-service:
+        image: "quarkus/book-service-jvm"
+        network_mode: host
+        depends_on:
+          - database
+    borrow-service:
+        image: "quarkus/borrow-service-jvm"
+        network_mode: host
+        depends_on:
+          - database
+    user-service:
+        image: "quarkus/user-service-jvm"
+        network_mode: host
+        depends_on:
+          - database

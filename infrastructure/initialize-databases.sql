@@ -1,0 +1,14 @@
+CREATE USER book_user WITH PASSWORD 'pass';
+CREATE DATABASE book_user;
+CREATE DATABASE book_db;
+GRANT ALL PRIVILEGES ON DATABASE book_db TO book_user;
+
+CREATE USER borrow_user WITH PASSWORD 'pass';
+CREATE DATABASE borrow_user;
+CREATE DATABASE borrow_db;
+GRANT ALL PRIVILEGES ON DATABASE borrow_db TO borrow_user;
+
+CREATE USER user_user WITH PASSWORD 'pass';
+CREATE DATABASE user_user;
+CREATE DATABASE user_db;
+GRANT ALL PRIVILEGES ON DATABASE user_db TO user_user;
