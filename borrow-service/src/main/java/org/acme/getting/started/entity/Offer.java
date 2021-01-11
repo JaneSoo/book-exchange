@@ -22,6 +22,14 @@ public class Offer extends PanacheEntityBase {
 
     public Boolean availability = true;
 
+    public static Offer add(Long owner_id, String isbn) {
+        Offer offer = new Offer();
+        offer.owner_id = owner_id;
+        offer.isbn = isbn;
+        offer.persist();
+        return offer;
+    }
+
     @Override
     public String toString() {
         return "Offer{" +
